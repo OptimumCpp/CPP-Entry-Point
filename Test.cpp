@@ -8,9 +8,11 @@
 std::int32_t cmain(lib_fm::command_line cmd)
 {
     if (cmd.size() == 1) {
-        endl(endl(std::cerr) << "Usage: " << cmd.front() << "\targ1 arg_2 A3 ...");
+        endl(endl(std::cerr) << "Usage: " << cmd.front() << "\targ1 arg_2 A3 4 ...");
         return EXIT_FAILURE;
     };
+
+    endl(endl(std::cout) << "wellcome to:\t" << cmd[0].size() << ":" << cmd[0]);
 
     endl(endl(std::cout) << "reversed");
     for (auto it = cmd.rbegin(); it != cmd.rend(); ++it)
@@ -43,15 +45,3 @@ std::int32_t cmain(lib_fm::command_line cmd)
 
     return EXIT_SUCCESS;
 };
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
