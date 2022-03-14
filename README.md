@@ -13,7 +13,7 @@ Defines the 'command_line' class as a 'std::span<char * const>' that imposts its
 That is the value is actually initialized and stored as 'std::span<char * const>' but accessor member functions and itertors are 
 decorated to return 'std::string_view' instead of raw null-terminated strings.
 
-**comman_line::command_line(int argc, char** argv);**
+**comman_line::command_line(int argc, char\*\* argv); **
 
 This constructor can directly capture the command line arguments function and provide a very safe and elegant view  object to the 'argv'
 
