@@ -38,16 +38,17 @@ namespace lib_fm {
 		using base_type = span<ch_type* const, ext>;
 		using char_type = ch_type;
 		using char_traits = traits;
+		using legacy_reference = typename base_type::reference;
 		using legacy_element_type = typename base_type::element_type;
 		using legacy_pointer = typename base_type::pointer;
 		using command_pointer = char_type**;
-		typedef char_type const *const*pointer, *const*const_pointer;
+		typedef const char_type  *const*pointer, *const*const_pointer;
 		
 		/// <summary>
 		/// ='std::basic_string_view'.
 		/// Result of 'front', 'back', 'operator[index]' and dereferencing 'basic_command_line::iterator'
 		/// </summary>
-		typedef const basic_string_view<char_type, char_traits> argument_type, element_type;
+		typedef const basic_string_view<char_type, char_traits> argument_type, value_type, element_type, const_element_type;
 
 		template <typename base_iterator> struct basic_iterator;
 		using iterator = basic_iterator<typename base_type::iterator>;
@@ -282,7 +283,8 @@ namespace lib_fm {
 			};
 
 			/// <summary>
-			/// a smart ptr that converts null-terminated strings to 'std::string_view's on the fly.
+			/// a smart ptr that converts null-terminated strings to 'std::string_view's on the fly. A fancy ptr to be used
+			/// as the result of indirection ('basic_iterator::operator->').
 			/// <TODO>Move this outside the 'basic_comand_line' to reduce compiler load; It doesn't depent on 'extent'</TODO>
 			/// </summary>
 			struct pointer {
@@ -300,17 +302,20 @@ namespace lib_fm {
 		};//!basic_iterator
 
 	private:
-		
+
+		using typename base_type::reference;
+		using typename base_type::const_reference;
+
 		/// <summary>
 		/// Changes the view from a list of null-terminated strings to a list of 'std::basic_string_view'
-		/// <TODO>Move this outside the 'basic_comand_line' to reduce compiler load; It doesn't depent on 'extent'</TODO>
+		/// <TODO>Move this outside the 'basic_comand_line' to reduce compiler load; It doesn't depent on 'this->extent'</TODO>
 		/// </summary>
 		/// <param name="source"> result of 'std::span::first', 'std::span::last', 'std::span::subspan' </param>
 		/// <returns>A subview of 'std::basic_string_view'  to the command line arguments</returns>
 		template<size_t oth_ext>
 		static constexpr auto from_span(span<legacy_element_type, oth_ext> source) noexcept
 		{
-			return basic_command_line<char_type,oth_ext> { source.data(),source.size() };
+			return basic_command_line<char_type,oth_ext,char_traits> { source.data(),source.size() };
 		}
 
 	};//!basic_command_line
