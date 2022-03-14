@@ -14,7 +14,11 @@
 /// </summary>
 namespace lib_fm {
 
-	using namespace std;
+	//using namespace std;
+	using std::dynamic_extent;
+	using std::char_traits;
+	using std::span;
+	using std::basic_string_view;
 
 	/// <summary>
 	/// this class is supposed to wrap arguments of the main function in an ideally NOOP fashion and provide
@@ -73,7 +77,7 @@ namespace lib_fm {
 			/// <param name="first">reads the'argv' argument list from 'main' function</param>
 			/// <returns>creates a light-weight object to mannage command line argumnts</returns>
 			constexpr basic_command_line(int count, command_pointer first) noexcept
-			: base_type{ first, count }
+			: base_type{ first, static_cast<size_t>(count) }
 		{};
 
 		//iterator to first command line argument:
@@ -160,7 +164,7 @@ namespace lib_fm {
 		template <size_t offset, size_t count = dynamic_extent>
 		constexpr auto subspan() const noexcept
 		{
-			return from_span(this->base_type::subspan<offset, count>());
+			return from_span(this->base_type::template subspan<offset, count>());
 		};
 
 		///<summary> Hides 'span::first'.</summary>
@@ -184,7 +188,7 @@ namespace lib_fm {
 		template <size_t count>
 		constexpr auto first() const noexcept
 		{
-			return  from_span(this->base_type::first<count>());
+			return  from_span(this->base_type::template first<count>());
 		};
 
 		///<summary> Hides 'span::last'.</summary>
@@ -208,7 +212,7 @@ namespace lib_fm {
 		template <size_t count>
 		constexpr auto last() const noexcept
 		{
-			return  from_span(this->base_type::last<count>());
+			return  from_span(this->base_type::template last<count>());
 		};
 
 		/// <summary>
@@ -224,7 +228,8 @@ namespace lib_fm {
 		{
 			typedef const argument_type value_type, reference_type, const_reference_type;
 
-			typedef struct pointer const_pointer;
+			struct pointer;
+			using const_pointer=pointer;
 
 			auto operator<=>(basic_iterator const& right)const noexcept = default;
 
@@ -295,7 +300,7 @@ namespace lib_fm {
 				};
 			};
 		private:
-			friend typename basic_command_line;
+			friend struct basic_command_line;
 			constexpr basic_iterator(base_iterator  val) noexcept
 				:base_iterator{ move(val) }
 			{};
