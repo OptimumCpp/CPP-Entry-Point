@@ -17,7 +17,7 @@ comman_line::command_line(int argc, char** argv);
 
 This constructor can directly capture the command line arguments function and provide a very safe and elegant view  object to the 'argv'
 
-cmain.hpp
+<cmain.hpp>
 
 Defines the traditional entry point function 'main' as a forwarder to the safer substitue entry point function 'cmain'.
 This header must only be included in the CPP file that traditionally used to define the 'main' function(AKA application's main module).
@@ -27,7 +27,7 @@ int cmain(command_line);
 
 This function defines the substitute entry point in the main module, where <cmain.hpp> has been included.
 
-Test.cpp
+*Test.cpp*
 
 This is an illustration of a main module using the substitue entry point function and command line encapsulating class provided by this repository.
 Just put the 3 files in the same folder and build this cpp file to see the usage example in effect. After a successful build run the program in 
